@@ -1,0 +1,24 @@
+#gameWindow {
+    display: grid;
+    grid-template: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, auto);
+    text-align: center;
+    margin: 10vw 20vh;
+}
+.card {
+    font-size: 30px;
+    margin: 20px;;
+    border: 1px solid black;
+    background-size: cover;
+    background-position: center;
+}
+
+.clicked {
+    background-color: green;
+    transition: 1s;
+}
+
+.correct {
+    background: pink;
+    transition: 0.3s;
+}
