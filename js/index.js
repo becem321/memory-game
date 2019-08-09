@@ -1,26 +1,56 @@
 const SYMBOLS = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
 function game() {
   /****** shuffling program ******/
-
+  var seconds = "00";
+  var minutes = "00";
+  var secondsDiv = document.getElementById("seconds");
+  var minutesDiv = document.getElementById("minutes");
+  
+  timer = () => {
+    secondsDiv.innerText = seconds;
+    minutesDiv.innerText = minutes;
+    setTimeout(() => {
+      if (seconds < 11) {
+        
+        seconds++;
+        if (seconds < 10) {
+          seconds = "0" + seconds;
+        }
+        console.log(seconds);
+        timer();
+      }
+      else {
+        minutes++;
+        seconds = "00";
+        if (minutes < 10) {
+          minutes = "0" + minutes;
+        }
+        timer();
+      }
+    }, 1000);
+    
+  };
+  timer();
   var gameWindow = document.getElementById("gameWindow");
-  const RANDOM_SYMBOLS = [];
-  // copy the items in symbols into RANDOM_SYMBOLS in random order.
+  var randomSymbols = [];
+  // copy the items in symbols into randomSymbols in random order.
   shuffle = () => {
-  for (let i = 0; i < 16; i++) {
-    const RANDOM_NUMBER = Math.floor(Math.random() * SYMBOLS.length);
-    RANDOM_SYMBOLS.splice(RANDOM_NUMBER, 0, SYMBOLS[i]);
-  }
-  // create divs form RANDOM_SYMBOLS with event listener.
-  for (let i = 0; i < 16; i++) {
-    var card = document.createElement("div");
-    card.innerText = RANDOM_SYMBOLS[i];
-    card.classList.add(RANDOM_SYMBOLS[i], "card");
-    card.addEventListener("click", cardClicked);
-    gameWindow.appendChild(card);
-  }
-  /*shuffling program*/
-  }
+    for (let i = 0; i < 16; i++) {
+      const RANDOM_NUMBER = Math.floor(Math.random() * SYMBOLS.length);
+      randomSymbols.splice(RANDOM_NUMBER, 0, SYMBOLS[i]);
+    }
+    // create divs form randomSymbols with event listener.
+    for (let i = 0; i < 16; i++) {
+      var card = document.createElement("div");
+      card.innerText = randomSymbols[i];
+      card.classList.add(randomSymbols[i], "card");
+      card.addEventListener("click", cardClicked);
+      gameWindow.appendChild(card);
+    }
+  };
   shuffle();
+  /*shuffling program*/
+
   /****** clicked cards handler ******/
 
   // this program take's care of
@@ -56,21 +86,25 @@ function game() {
       // this is the next step :p execute the game logic and restart data
 
       if (firstCard === secondCard) {
-        console.log(`firstCard (${firstCard}) | secondCard (${secondCard})`);
-        console.log("You Win");
         e.target.classList.replace("clicked", "correct");
         firstCardDiv.classList.replace("clicked", "correct");
         scoreChecker();
       } else {
         setTimeout(() => {
+          // using timeout to create transition between the state of being rested and clicked
           e.target.classList.remove("clicked");
           firstCardDiv.classList.remove("clicked");
           e.target.addEventListener("click", cardClicked);
           firstCardDiv.addEventListener("click", cardClicked);
         }, 700);
       }
+
       firstCard = undefined;
       secondCard = undefined;
+    } else if (secondCard !== undefined) {
+      for (let card of CARDS) {
+        card.parentNode.removeChild(card);
+      }
     }
     /*
 function scoreChecker(){
@@ -98,22 +132,27 @@ function scoreChecker(){
     console.log(firstCard);
     console.log(secondCard);
   };
-
+  /*clicked cards handler*/
   /***** restart button *****/
-var restartButton = document.querySelector("#restart-button");
-restartButton.addEventListener("click", () => {
-  score = 1;
-  scoreDiv.innerText = score;
-  const CARDS = document.querySelectorAll('.card');
-  for (let card of CARDS) {
-    card.parentNode.removeChild(card);    
-  }
-  shuffle();
-});
- /* restart button */
- 
-}
-/*clicked cards handler*/
+  // the restart button restart score to 1, timer to 0 and reshuffle the cards
+  var restartButton = document.querySelector("#restart-button");
+  restartButton.addEventListener("click", () => {
 
+    console.log(`your timing is ${parseInt(minutes, 10)} minutes and ${parseInt(seconds, 10)} seconds`);
+    console.log(`your score ${score}`);
+    seconds = "00";
+    minutes = "00";
+    score = 1;
+    scoreDiv.innerText = score;
+    const CARDS = document.querySelectorAll(".card");
+    for (let card of CARDS) {
+      card.parentNode.removeChild(card);
+    }
+    randomSymbols = [];
+    shuffle();
+  });
+  /* restart button */
+  /***** timer *****/
+}
 
 game();

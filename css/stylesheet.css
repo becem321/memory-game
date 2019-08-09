@@ -4,6 +4,7 @@
     grid-template-columns: repeat(4, auto);
     text-align: center;
     margin: 10vw 20vh;
+    
 }
 .card {
     font-size: 30px;
@@ -21,4 +22,22 @@
 .correct {
     background: pink;
     transition: 0.3s;
+}
+
+button {
+    width: 150px;
+    height: 30px;
+    display: grid;
+    justify-self: center;
+}
+
+#score-board {
+    border: 1px solid black;
+    text-align: center;
+    font-size: 40px;
+    color: goldenrod;
+}
+
+#timer {
+    display: flex;
 }
