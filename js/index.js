@@ -1,6 +1,8 @@
+
 const SYMBOLS = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
 function game() {
   /****** shuffling program ******/
+  var moves = 0;
   var seconds = "00";
   var minutes = "00";
   var secondsDiv = document.getElementById("seconds");
@@ -10,7 +12,7 @@ function game() {
     secondsDiv.innerText = seconds;
     minutesDiv.innerText = minutes;
     setTimeout(() => {
-      if (seconds < 11) {
+      if (seconds < 60) {
         
         seconds++;
         if (seconds < 10) {
@@ -82,9 +84,8 @@ function game() {
     } else if (firstCard !== undefined && secondCard === undefined) {
       secondCard = e.target.classList[0];
       console.log(`this is SecondCard = ${secondCard}`);
-
+      
       // this is the next step :p execute the game logic and restart data
-
       if (firstCard === secondCard) {
         e.target.classList.replace("clicked", "correct");
         firstCardDiv.classList.replace("clicked", "correct");
@@ -148,6 +149,8 @@ function scoreChecker(){
     for (let card of CARDS) {
       card.parentNode.removeChild(card);
     }
+    //for the restart bug thing ahmed told me about
+    firstCard = undefined;
     randomSymbols = [];
     shuffle();
   });
