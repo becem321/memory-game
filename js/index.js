@@ -1,27 +1,23 @@
-
-const SYMBOLS = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-function game() {
-  /****** shuffling program ******/
-  var moves = 0;
+(function game() {
+  // first we set the clock.
   var seconds = "00";
   var minutes = "00";
   var secondsDiv = document.getElementById("seconds");
   var minutesDiv = document.getElementById("minutes");
-  
+
+  // this function execute after the first card reveal
   timer = () => {
     secondsDiv.innerText = seconds;
     minutesDiv.innerText = minutes;
     setTimeout(() => {
       if (seconds < 60) {
-        
         seconds++;
         if (seconds < 10) {
+          // just so i have the 00:00 format
           seconds = "0" + seconds;
         }
-        console.log(seconds);
         timer();
-      }
-      else {
+      } else {
         minutes++;
         seconds = "00";
         if (minutes < 10) {
@@ -30,17 +26,20 @@ function game() {
         timer();
       }
     }, 1000);
-    
-  };
-  timer();
+  }
+
+  /****** shuffling program ******/
+  const SYMBOLS = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
   var gameWindow = document.getElementById("gameWindow");
   var randomSymbols = [];
-  // copy the items in symbols into randomSymbols in random order.
-  shuffle = () => {
+
+  (shuffle = () => {
+    // copy the items in symbols into randomSymbols in random order.
     for (let i = 0; i < 16; i++) {
       const RANDOM_NUMBER = Math.floor(Math.random() * SYMBOLS.length);
       randomSymbols.splice(RANDOM_NUMBER, 0, SYMBOLS[i]);
     }
+
     // create divs form randomSymbols with event listener.
     for (let i = 0; i < 16; i++) {
       var card = document.createElement("div");
@@ -49,77 +48,70 @@ function game() {
       card.addEventListener("click", cardClicked);
       gameWindow.appendChild(card);
     }
-  };
-  shuffle();
-  /*shuffling program*/
+  })();
 
   /****** clicked cards handler ******/
 
-  // this program take's care of
+  // this program (cardClicked) take's care of
   // 1- reveal the hidden symbol behind the clicked card (with fucntion revealCard(e)).
   // 2- acknowledge the card clicked and execute the game logic ( function cardsChecker(e)).
   // 3- placeholder
-
-  var firstCard;
-  var secondCard;
-  var firstCardDiv;
-  var score = 1;
-  var scoreDiv = document.querySelector("#score-board");
+/*
   function cardClicked(e) {
-    revealCard(e);
-    cardsChecker(e);
+    cardsChecker(e)
+    revealCard(e)
   }
+  */
+  var movesDiv = document.getElementById('moves');
+  
+  var moves = 0;
+  movesDiv.innerText = moves;
 
-  revealCard = e => {
+  function revealCard(e) {   
     e.target.classList.add("clicked");
     e.target.removeEventListener("click", cardClicked);
-  };
+    if (seconds === "00" && minutes === "00") {
+      timer();
+    }
+  }
 
-  cardsChecker = e => {
-    // check which card is clicked for both first and second card and store data for the next step
+  var firstCard, secondCard, firstCardDiv;
+  var score = 1;
+  var scoreDiv = document.querySelector("#score-board");
+
+  
+  function cardClicked(e) {
+    
     if (firstCard === undefined) {
       firstCard = e.target.classList[0];
-      console.log(`this is firstCard = ${firstCard}`);
       firstCardDiv = e.target;
+      console.log(`this is firstCard = ${firstCard}`);revealCard(e)
     } else if (firstCard !== undefined && secondCard === undefined) {
       secondCard = e.target.classList[0];
-      console.log(`this is SecondCard = ${secondCard}`);
-      
-      // this is the next step :p execute the game logic and restart data
+      console.log(`this is SecondCard = ${secondCard}`);revealCard(e)
+      setTimeout(() => {
+      // this is the next step :p execute the game logic and restart data to initial state
       if (firstCard === secondCard) {
         e.target.classList.replace("clicked", "correct");
         firstCardDiv.classList.replace("clicked", "correct");
         scoreChecker();
       } else {
-        setTimeout(() => {
-          // using timeout to create transition between the state of being rested and clicked
           e.target.classList.remove("clicked");
           firstCardDiv.classList.remove("clicked");
           e.target.addEventListener("click", cardClicked);
           firstCardDiv.addEventListener("click", cardClicked);
-        }, 700);
       }
-
+    
       firstCard = undefined;
       secondCard = undefined;
-    } else if (secondCard !== undefined) {
-      for (let card of CARDS) {
-        card.parentNode.removeChild(card);
-      }
+      moves++;
+      movesDiv.innerText = moves;
+    }, 700);
     }
-    /*
-function scoreChecker(){
-  score++;
-  scoreDiv.innerText = score;
-  console.log(score);
-   if (score === 8){
-     setTimeout(function alertWin(){alert("You Win!!!!")}, 1000);
-     
-   }
-
-}
-*/
-    scoreChecker = () => {
+    
+  }
+    /******* Score Handler ******/
+    function scoreChecker() {
       score++;
       scoreDiv.innerText = score;
       console.log(score);
@@ -128,18 +120,25 @@ function scoreChecker(){
           alert("You Win!!!!");
         }, 1000);
       }
-    };
+    }
 
     console.log(firstCard);
     console.log(secondCard);
-  };
-  /*clicked cards handler*/
+  
+
+  /***** moves handler *****/
+
+  
   /***** restart button *****/
-  // the restart button restart score to 1, timer to 0 and reshuffle the cards
+  // the restart button restart score, timer, moves-counter to initial state and shuffle the cards
   var restartButton = document.querySelector("#restart-button");
   restartButton.addEventListener("click", () => {
-
-    console.log(`your timing is ${parseInt(minutes, 10)} minutes and ${parseInt(seconds, 10)} seconds`);
+    console.log(
+      `moves: ${moves} your timing is ${parseInt(minutes, 10)} minutes and ${parseInt(
+        seconds,
+        10
+      )} seconds`
+    );
     console.log(`your score ${score}`);
     seconds = "00";
     minutes = "00";
@@ -149,13 +148,12 @@ function scoreChecker(){
     for (let card of CARDS) {
       card.parentNode.removeChild(card);
     }
-    //for the restart bug thing ahmed told me about
+
     firstCard = undefined;
     randomSymbols = [];
     shuffle();
   });
-  /* restart button */
-  /***** timer *****/
-}
+  
 
-game();
+
+})();

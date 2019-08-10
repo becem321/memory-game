@@ -12,11 +12,12 @@
     border: 1px solid black;
     background-size: cover;
     background-position: center;
+    transition: 1s;
 }
 
 .clicked {
     background-color: green;
-    transition: 1s;
+    transition: 500;
 }
 
 .correct {
