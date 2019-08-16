@@ -6,6 +6,7 @@
   var minutesDiv = document.getElementById("minutes");
 
   // this function execute after the first card reveal
+  /*
   timer = () => {
     secondsDiv.innerText = seconds;
     minutesDiv.innerText = minutes;
@@ -27,10 +28,40 @@
       }
     }, 1000);
   }
+*/
+  function timer(){
+    setInterval( () => {
 
+    secondsDiv.innerText = seconds;
+    minutesDiv.innerText = minutes;
+    
+      if (seconds <= 60) {
+        seconds++;
+        if (seconds < 10) {
+          // just so i have the dd:dd format
+          seconds = "0" + seconds;
+        }
+      }
+      else {
+        minutes++;
+        seconds = "00";
+        if (minutes < 10) {
+          minutes = "0" + minutes;
+        }
+      }
+    }
+    ,1000)
+    
+  }
+  
+
+  var items = ["spa", "ac_unit", "gesture", "control_camera", "polymer", "gavel", "local_florist", "whatshot",
+   "spa", "ac_unit", "gesture", "control_camera", "polymer", "gavel", "local_florist", "whatshot"]
   /****** shuffling program ******/
-  const SYMBOLS = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
-  var gameWindow = document.getElementById("gameWindow");
+  //const SYMBOLS = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
+  const SYMBOLS = ["spa", "ac_unit", "gesture", "control_camera", "polymer", "gavel", "local_florist", "whatshot",
+  "spa", "ac_unit", "gesture", "control_camera", "polymer", "gavel", "local_florist", "whatshot"]
+  var cardsDiv = document.getElementById("cards");
   var randomSymbols = [];
 
   (shuffle = () => {
@@ -43,10 +74,11 @@
     // create divs form randomSymbols with event listener.
     for (let i = 0; i < 16; i++) {
       var card = document.createElement("div");
-      card.innerText = randomSymbols[i];
+      //card.innerHTML = `<i class="fas fa-${items[i]}"></i>`;
+      card.innerHTML = `<i class="material-icons orange600">${randomSymbols[i]}</i>`;
       card.classList.add(randomSymbols[i], "card");
       card.addEventListener("click", cardClicked);
-      gameWindow.appendChild(card);
+      cardsDiv.appendChild(card);
     }
   })();
 
@@ -65,14 +97,15 @@
   var movesDiv = document.getElementById('moves');
   
   var moves = 0;
-  movesDiv.innerText = moves;
+  movesDiv.innerText = "Moves: " + moves;
 
   function revealCard(e) {   
     e.target.classList.add("clicked");
     e.target.removeEventListener("click", cardClicked);
+    /*
     if (seconds === "00" && minutes === "00") {
       timer();
-    }
+    }*/
   }
 
   var firstCard, secondCard, firstCardDiv;
@@ -102,10 +135,14 @@
           firstCardDiv.addEventListener("click", cardClicked);
       }
     
+      if (moves === 1) {
+        timer();
+      }
+      
       firstCard = undefined;
       secondCard = undefined;
       moves++;
-      movesDiv.innerText = moves;
+      movesDiv.innerText = "Moves: " + moves;
     }, 700);
     }
     
@@ -115,7 +152,7 @@
       score++;
       scoreDiv.innerText = score;
       console.log(score);
-      if (score === 8) {
+      if (score === 9) {
         setTimeout(function alertWin() {
           alert("You Win!!!!");
         }, 1000);
@@ -144,6 +181,8 @@
     minutes = "00";
     score = 1;
     scoreDiv.innerText = score;
+    moves = 0;
+    movesDiv.innerText = "Moves: " + moves;
     const CARDS = document.querySelectorAll(".card");
     for (let card of CARDS) {
       card.parentNode.removeChild(card);
