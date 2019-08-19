@@ -106,7 +106,8 @@
       console.log(`this is SecondCard = ${secondCard}`);
       revealCard(e);
       setTimeout(() => {
-        // this is the next step :p execute the game logic and restart data to initial state
+        // this is the next step :p execute the game logic and restart data to initial state.
+        // setTimeout function purpose is giving a 1s window for player to memorize cards before they back face down.
         if (firstCard === secondCard) {
           e.target.classList.replace("clicked", "correct");
           firstCardDiv.classList.replace("clicked", "correct");
@@ -125,7 +126,7 @@
         secondCard = undefined;
         moves++;
         movesDiv.innerText = "Moves: " + moves;
-      }, 700);
+      }, 1000);
     }
   }
   var stars = "";
@@ -154,7 +155,6 @@
       }
     }
     scoreDiv.innerHTML = stars;
-
     // start timer after the first move
     timer();
 
@@ -176,7 +176,7 @@
     `
     setTimeout(() => {
     winningWindow.classList.add("animated")}
-    , 100
+    , 300
     );
     clearInterval(runTimer);
   }

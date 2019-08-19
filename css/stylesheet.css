@@ -49,9 +49,9 @@ body {
     color: white;
     cursor: pointer;
     border: 3px double #536880;
-    transition: 0.4s;
+    transition: 0.3s ease-in-out;
     box-shadow: 0 9px 19px rgba(0, 0, 0, 0.4), 0 8px 6px rgba(0, 0, 0, 0.22);
-    background: url(../imges/card-background.svg) no-repeat;
+    background: url(../images/card-background.svg) no-repeat;
     background-position: center;
     background-size: 5vw;
     margin: 0;
@@ -60,7 +60,6 @@ body {
 .clicked {
     transform: rotateY(180deg);
     background: inherit;
-    background: #2e4966;
 }
 
 .correct {
@@ -72,6 +71,7 @@ body {
 .card i {
     z-index: -1;
     opacity: 0;
+    font-size: 2rem;
 }
 
 .clicked i,
@@ -94,20 +94,20 @@ body {
 
 #timer {
     display: flex;
-    background: url(../imges/timer.svg) no-repeat;
+    background: url(../images/timer.svg) no-repeat;
 }
 
 #score-board {
-    background: url(../imges/score-board.svg) no-repeat;
+    background: url(../images/score-board.svg) no-repeat;
 }
 
 #restart-button {
-    background: url(../imges/restart-button.svg) no-repeat;
+    background: url(../images/restart-button.svg) no-repeat;
     cursor: pointer;
 }
 
 #moves {
-    background: url(../imges/moves.svg) no-repeat;
+    background: url(../images/moves.svg) no-repeat;
 }
 
 #score-board,
@@ -133,20 +133,25 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 40vh;
-    width: 45vw;
+    height: 50%;
+    width: 50%;
     background: radial-gradient(circle at center,
             rgba(253, 253, 253, 0.95),
             rgba(193, 221, 253, 0.95));
+    background: white;
     border-radius: 20px;
     border: 5px double #536880;
     text-align: center;
     opacity: 0;
     transition: 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .animated {
     opacity: 1;
+
 }
 
 .winning-window h3 {
@@ -207,4 +212,11 @@ body {
         justify-content: center;
         margin: 5vh auto;
     }
+
+    .winning-window {
+        width: 90vw;
+    }
+    .winning-window h3 {
+        font-size: 2rem;
+    }    
 }
